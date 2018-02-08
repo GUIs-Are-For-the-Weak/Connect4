@@ -6,10 +6,13 @@ class Board
     private int rows = 6;
     private int columns = 7;
     private char[,] board;
+    private Func<Board, int, bool> checkIfWon;
     public Board(int rows, int columns, Func<Board, int, bool> winCheck)
     {
         this.rows = rows;
         this.columns = columns;
+
+        checkIfWon = winCheck;
 
         for (int i = 0; i < rows; i++ )  
         {
