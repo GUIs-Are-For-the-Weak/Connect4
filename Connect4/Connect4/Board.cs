@@ -3,27 +3,51 @@ using System;
 class Board 
 {
     private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-    private int rows = 6;
-    private int columns = 7;
-    private char[,] board;
+    private int _rows = 6;
+    private int _columns = 7;
+    private char[,] _board;
+
+    public Board()
+    {
+        SetUp();
+    }
     private Func<Board, int, bool> checkIfWon;
     public Board(int rows, int columns, Func<Board, int, bool> winCheck)
     {
-        this.rows = rows;
-        this.columns = columns;
+        _rows = rows;
+        _columns = columns;
+        SetUp();
 
         checkIfWon = winCheck;
 
-        for (int i = 0; i < rows; i++ )  
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                board[i,j] = '-';
-            }
-        }
-
     }
 
+    public void SetUp()
+    {
+        _board = new char[_columns, _rows];
+        for (int i = 0; i < _columns; i++ )  
+        {
+            for (int j = 0; j < _rows; j++)
+            {
+                _board[i,j] = '-';
+            }
+        }
+    }
+
+    public void Draw()
+    {
+        Console.WriteLine(" 1 2 3 4 5 6");
+        for (int i = 0; i < _columns; i++)
+        {
+            for (int j = 0; j < _rows; j++)
+            {
+                Console.Write('|');
+                Console.Write(_board[i,j]);
+            }
+            Console.Write('|');
+            Console.WriteLine();
+        }
+    }
     public event EndGame GameEnded;
 
 
@@ -31,7 +55,7 @@ class Board
     {
         get
         {
-            return board[row, column];
+            return _board[row, column];
         }
     }
 }
