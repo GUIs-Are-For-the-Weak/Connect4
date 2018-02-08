@@ -6,8 +6,7 @@ namespace Connect4
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.ReadLine();
+            
         }
     }
 }
