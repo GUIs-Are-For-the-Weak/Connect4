@@ -6,7 +6,7 @@ class Board
     private int rows = 6;
     private int columns = 7;
     private char[,] board;
-    public Board(int rows, int columns)
+    public Board(int rows, int columns, Func<Board, int, bool> winCheck)
     {
         this.rows = rows;
         this.columns = columns;
@@ -21,6 +21,9 @@ class Board
 
     }
 
+    public event EndGame GameEnded;
+
+
     public int this[int row, int column]
     {
         get
@@ -29,3 +32,5 @@ class Board
         }
     }
 }
+
+delegate void EndGame(/*null if draw*/Player winner);
