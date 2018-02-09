@@ -3,10 +3,10 @@ using System;
 abstract class Player
 {
     private String _name;
-    private ConsoleColor _colour;
+    public ConsoleColor Colour { get; }
     public Player(ConsoleColor colour, String name)
     {
-        _colour = colour;
+        Colour = colour;
         _name = name;
     }
 

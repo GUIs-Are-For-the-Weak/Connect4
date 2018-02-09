@@ -3,7 +3,7 @@ using System;
 class Board
 {
     private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-    private char[,] _board;
+    private Player[,] _board;
     private Func<Board, int, bool> checkIfWon;
     public Board(int height, int width, Func<Board, int, bool> winCheck)
     {
@@ -15,7 +15,7 @@ class Board
 
     public void SetUp(int rows, int columns)
     {
-        _board = new char[rows, columns];
+        _board = new Player[rows, columns];
         for (int i = 0; i < _board.GetLength(0); i++ )
         {
             for (int j = 0; j < _board.GetLength(1); j++)
@@ -23,6 +23,16 @@ class Board
                 _board[i,j] = '-';
             }
         }
+    }
+
+    public bool PlacePiece()
+    {
+        throw new NotImplementedException();
+    }
+
+    private bool IsColumnFull(int column)
+    {
+        return 
     }
 
     public void Draw()
