@@ -80,7 +80,7 @@ namespace Connect4
                 
             } while (true);
             return true;
-        };
+        }
        
     }
 }
