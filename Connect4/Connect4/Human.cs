@@ -2,9 +2,9 @@ using System;
 
 class Human : Player
 {
-    public Human(ConsoleColor colour, String name) : base(colour, name)
+    public Human(ConsoleColor colour, String name) : base(colour)
     {
-        
+        SetName(name);
     }
 
     public override int TakeTurn()
