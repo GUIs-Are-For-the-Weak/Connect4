@@ -52,7 +52,7 @@ class Board
     public event EndGame GameEnded;
 
 
-    public int this[int row, int column]
+    public char this[int row, int column]
     {
         get
         {

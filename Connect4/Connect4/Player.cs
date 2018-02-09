@@ -2,13 +2,14 @@ using System;
 
 abstract class Player
 {
-    private String _name;
+    public String Name { get; set; }
     public ConsoleColor Colour { get; }
-    public Player(ConsoleColor colour, String name)
+
+    public Player(ConsoleColor colour)
     {
         Colour = colour;
         _name = name;
     }
 
-    abstract public int TakeTurn();    
+    public abstract int TakeTurn();    
 }
