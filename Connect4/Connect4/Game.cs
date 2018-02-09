@@ -3,62 +3,21 @@ using System;
 class Game
 {
     private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-    private int _gameType; //Number in a row needed for a win
+    private int _winLength; //Number in a row needed for a win
     private Player[] players; //Array of players
-    private Func<Board, int, bool> winCondition; //The condition necassary to win
-    const int WinLength = 4; //The number of pieces in-a-row required to win.
+    private Func<Board, int, bool> isGameWon; //The condition necassary to win
+    const int DefaultWinLength = 4; //The number of pieces in-a-row required to win.
     //TODO: Implement different win types
 
     //Constructor
-    public Game()
+    public Game(Func<Board, int, bool> winCondition)
     {
         //Determine player count, and types of players
         players = DeterminePlayers();
-        _gameType = WinLength;
+        _winLength = DefaultWinLength;
         
 
-        winCondition = delegate(Board board, int column) 
-        {
-            int row = 0;
-            int inlineCount = 0;
-            Player currentToken, nextToken;
-            bool changeDirection = false;
-            //Get the position of the token that was just placed
-            for (int i = 6; i >= 0; i--)
-            {
-                if(board[i, column] != null)
-                {
-                    row = i;
-                    break;
-                }
-            }
-            currentToken = board[row,column];
-            for (int i = 0; i < _gameType; i++)
-            {
-                if(row-i > 0)
-                {
-                    nextToken = board[row-(i+1),column];
-                    if(currentToken == nextToken)
-                    {
-                        inlineCount++;
-                        currentToken = nextToken;
-                    } 
-                    else
-                    {
-                        break;    
-                    }
-                } 
-                else
-                {
-                    break;
-                }
-            }
-            do
-            {
-                
-            } while (true);
-            return true;
-        };
+        isGameWon = winCondition;
 
         //Create the game board
         Board gameBoard = new Board(6, 7, (Board, column) => throw new NotImplementedException());
@@ -67,7 +26,7 @@ class Game
 
     //Determine the number of players that are in the game
     //TODO: Determine which players are AI and human.
-    private int DeterminePlayerNumber()
+    private static int DeterminePlayerNumber()
     {
         Console.WriteLine("How many players do you want?");
         int answer = 0;
@@ -87,7 +46,7 @@ class Game
         return answer;
     }
 
-    private Player[] DeterminePlayers()
+    private static Player[] DeterminePlayers()
     {
         Player[] players = new Player[DeterminePlayerNumber()];
 
