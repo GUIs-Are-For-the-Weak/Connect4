@@ -7,22 +7,10 @@ class Board
     private Func<Board, int, bool> checkIfWon;
     public Board(int height, int width, Func<Board, int, bool> winCheck)
     {
-        SetUp(height, width);
+        _board = new Player[height, width];
         Draw();
         checkIfWon = winCheck;
 
-    }
-
-    public void SetUp(int rows, int columns)
-    {
-        _board = new Player[rows, columns];
-        for (int i = 0; i < _board.GetLength(0); i++ )
-        {
-            for (int j = 0; j < _board.GetLength(1); j++)
-            {
-                _board[i,j] = '-';
-            }
-        }
     }
 
     public bool PlacePiece()
@@ -30,10 +18,7 @@ class Board
         throw new NotImplementedException();
     }
 
-    private bool IsColumnFull(int column)
-    {
-        return 
-    }
+    private bool IsColumnFull(int column) => _board[0, column] != null;
 
     public void Draw()
     {
@@ -52,13 +37,7 @@ class Board
     public event EndGame GameEnded;
 
 
-    public char this[int row, int column]
-    {
-        get
-        {
-            return _board[row, column];
-        }
-    }
+    public Player this[int row, int column] => _board[row,column];
 }
 
 

@@ -7,10 +7,10 @@ class AI : Player
     private Board _board;
 
     //Constructor - take a colour and the board being played.
-    public AI(ConsoleColor colour, Board board) : base(colour)
+    public AI(ConsoleColor colour, Board board) : base(colour, name: "AI")
     {
         _colour = colour;
-        _board = board;
+        _board = board; 
     }
 
     public override int TakeTurn()

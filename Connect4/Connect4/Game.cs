@@ -22,7 +22,7 @@ class Game
             //Get the position of the token that was just placed
             for (int i = 6; i >= 0; i--)
             {
-                if(board[i, column] != '-')
+                if(board[i, column] != null)
                 {
                     row = i;
                     break;
