@@ -7,6 +7,7 @@ class Game
     private Player[] players; //Array of players
     private Func<Board, int, bool> winCondition; //The condition necassary to win
     const int WinLength = 4; //The number of pieces in-a-row required to win.
+    private Board gameBoard;
     //TODO: Implement different win types
 
     //Constructor
@@ -61,12 +62,11 @@ class Game
         };
 
         //Create the game board
-        Board gameBoard = new Board(6, 7, (Board, column) => throw new NotImplementedException());
+        gameBoard = new Board(6, 7, winCondition);
     }
 
 
     //Determine the number of players that are in the game
-    //TODO: Determine which players are AI and human.
     private int DeterminePlayerNumber()
     {
         Console.WriteLine("How many players do you want?");
@@ -92,7 +92,7 @@ class Game
         Player[] players = new Player[DeterminePlayerNumber()];
 
         //Determine the main players name, and add them to the array.
-        players[0] = new Human(ConsoleColor.Yellow, getPlayerName());
+        players[0] = new Human(colours[0], getPlayerName());
 
         //Determine the type of each other player.
         for (int i = 1; i < players.Length; i++)
@@ -108,11 +108,11 @@ class Game
                     if (typeChoice == 1)
                     {
 
-                        players[i] = new Human(ConsoleColor.Red, getPlayerName());
+                        players[i] = new Human(colours[i], getPlayerName());
                     }
                     else if (typeChoice == 2)
                     {
-                        players[i] = new AI(ConsoleColor.Red, new Board(6, 7, (Board, column) => throw new NotImplementedException()));
+                        players[i] = new AI(colours[i], gameBoard);
                     }
                     else
                     {
