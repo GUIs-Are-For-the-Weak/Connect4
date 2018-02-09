@@ -3,20 +3,18 @@ using System;
 class Game
 {
     private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-
-    private int _numberOfPlayers; //Number of players in the game TODO: Determine if AI or Human
     private int _gameType; //Number in a row needed for a win
     private Player[] players; //Array of players
     private Func<Board, int, bool> winCondition; //The condition necassary to win
-    const int DEFAULT_WIN = 4; //TODO: Implement different win types
+    const int WinLength = 4; //The number of pieces in-a-row required to win.
+    //TODO: Implement different win types
 
     //Constructor
     public Game()
     {
         //Determine player count, and types of players
-        _numberOfPlayers = this.DeterminePlayerNumber();
         players = DeterminePlayers();
-        _gameType = DEFAULT_WIN;
+        _gameType = WinLength;
         
 
         winCondition = delegate(Board board, int column) 
@@ -91,13 +89,13 @@ class Game
 
     private Player[] DeterminePlayers()
     {
-        Player[] players = new Player[_numberOfPlayers];
+        Player[] players = new Player[DeterminePlayerNumber()];
 
         //Determine the main players name, and add them to the array.
-        players[0] = new Human(ConsoleColor.Yellow, getName());
+        players[0] = new Human(ConsoleColor.Yellow, getPlayerName());
 
         //Determine the type of each other player.
-        for (int i = 1; i < _numberOfPlayers; i++)
+        for (int i = 1; i < players.Length; i++)
         {
             Console.WriteLine("What should player" + (i + 1) + " be?");
             Console.WriteLine("1. A human player.");
@@ -110,7 +108,7 @@ class Game
                     if (typeChoice == 1)
                     {
 
-                        players[i] = new Human(ConsoleColor.Red, getName());
+                        players[i] = new Human(ConsoleColor.Red, getPlayerName());
                     }
                     else if (typeChoice == 2)
                     {
@@ -130,7 +128,7 @@ class Game
         return players;
     }
 
-    private static String getName()
+    private static String getPlayerName()
     {
         Console.WriteLine("Enter a name:");
         return Console.ReadLine();

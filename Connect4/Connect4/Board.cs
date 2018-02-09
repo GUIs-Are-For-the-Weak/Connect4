@@ -2,7 +2,6 @@ using System;
 
 class Board
 {
-    private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
     private Player[,] _board;
     private Func<Board, int, bool> checkIfWon;
     public Board(int height, int width, Func<Board, int, bool> winCheck)
