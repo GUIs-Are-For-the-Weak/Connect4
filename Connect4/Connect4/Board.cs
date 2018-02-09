@@ -1,30 +1,24 @@
 using System;
 
-class Board 
+class Board
 {
     private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-    private int _rows = 6;
-    private int _columns = 7;
     private char[,] _board;
-
-    public Board()
+    private Func<Board, int, bool> checkIfWon;
+    public Board(int height, int width, Func<Board, int, bool> winCheck)
     {
-        SetUp();
-    }
-    public Board(int rows, int columns)
-    {
-        _rows = rows;
-        _columns = columns;
-        SetUp();
+        SetUp(height, width);
+        Draw();
+        checkIfWon = winCheck;
 
     }
 
-    public void SetUp()
+    public void SetUp(int rows, int columns)
     {
-        _board = new char[_columns, _rows];
-        for (int i = 0; i < _columns; i++ )  
+        _board = new char[rows, columns];
+        for (int i = 0; i < _board.GetLength(0); i++ )
         {
-            for (int j = 0; j < _rows; j++)
+            for (int j = 0; j < _board.GetLength(1); j++)
             {
                 _board[i,j] = '-';
             }
@@ -34,9 +28,9 @@ class Board
     public void Draw()
     {
         Console.WriteLine(" 1 2 3 4 5 6");
-        for (int i = 0; i < _columns; i++)
+        for (int i = 0; i < _board.GetLength(0); i++)
         {
-            for (int j = 0; j < _rows; j++)
+            for (int j = 0; j < _board.GetLength(1); j++)
             {
                 Console.Write('|');
                 Console.Write(_board[i,j]);
@@ -45,6 +39,9 @@ class Board
             Console.WriteLine();
         }
     }
+    public event EndGame GameEnded;
+
+
     public int this[int row, int column]
     {
         get
@@ -53,3 +50,6 @@ class Board
         }
     }
 }
+
+
+delegate void EndGame(/*null if draw*/Player winner);
