@@ -11,7 +11,7 @@ namespace Connect4
             do
             {
                 Console.Clear();
-                Game game = new Game();
+                Game game = new Game(StandardWinCondition);
                 Console.WriteLine("Do you want to play another game? Y/N");
                 bool check = true;
                 do
@@ -39,6 +39,48 @@ namespace Connect4
             Console.ReadLine(); //Needed to stop the console window from closing
         }
 
+        private static bool StandardWinCondition(Board board, int column)
+        {
+            int row = 0;
+            int inlineCount = 0;
+            Player currentToken, nextToken;
+            bool changeDirection = false;
+            //Get the position of the token that was just placed
+            for (int i = 6; i >= 0; i--)
+            {
+                if(board[i, column] != null)
+                {
+                    row = i;
+                    break;
+                }
+            }
+            currentToken = board[row,column];
+            for (int i = 0; i < 4; i++)
+            {
+                if(row-i > 0)
+                {
+                    nextToken = board[row-(i+1),column];
+                    if(currentToken == nextToken)
+                    {
+                        inlineCount++;
+                        currentToken = nextToken;
+                    } 
+                    else
+                    {
+                        break;    
+                    }
+                } 
+                else
+                {
+                    break;
+                }
+            }
+            do
+            {
+                
+            } while (true);
+            return true;
+        };
        
     }
 }
