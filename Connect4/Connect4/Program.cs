@@ -38,7 +38,7 @@ namespace Connect4
                 }
             }
             currentToken = board[row,column];
-            for (int i = 0; i < _gameType; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if(row-i > 0)
                 {

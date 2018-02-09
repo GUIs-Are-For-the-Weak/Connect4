@@ -3,18 +3,14 @@ using System;
 class Game
 {
     private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-    private int _winLength; //Number in a row needed for a win
     private Player[] players; //Array of players
     private Func<Board, int, bool> isGameWon; //The condition necassary to win
-    const int DefaultWinLength = 4; //The number of pieces in-a-row required to win.
-    //TODO: Implement different win types
 
     //Constructor
     public Game(Func<Board, int, bool> winCondition)
     {
         //Determine player count, and types of players
         players = DeterminePlayers();
-        _winLength = DefaultWinLength;
         
 
         isGameWon = winCondition;
