@@ -17,9 +17,8 @@ class Game
     //Start the game
     public void SetupBoard()
     {
-        //Create the board and display it on the screen
-        Board board = new Board();
-        board.Draw();
+        //Create the board
+        Board board = new Board(6, 7, (Board, column) => throw new NotImplementedException());
     }
 
 }
