@@ -25,22 +25,30 @@ class Game
     //TODO: Determine which players are AI and human.
     private static int DeterminePlayerNumber()
     {
-        Console.WriteLine("How many players do you want?");
-        int answer = 0;
-        while (answer <= 1)
-        {
-            //Determine if the input is an integer, and store it in answer if it is.
-            if (!(int.TryParse(Console.ReadLine(), out answer)))
-            {
-                Console.WriteLine("Please enter an integer.");
-            }
-            else if (answer <= 1)
-            {
-                Console.WriteLine("Please enter a number above 1.");
-            }
-        }
-        Console.WriteLine("You have " + answer + " players in the game.");
+        Console.Write("Enter the number of players: ");
+
+        int answer;
+        while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2)
+            Console.Write("Please enter an integer of at least 2.\nEnter the number of players: ");
+
         return answer;
+
+        //int answer
+
+        //while (answer <= 1)
+        //{
+        //    //Determine if the input is an integer, and store it in answer if it is.
+        //    if (!(int.TryParse(Console.ReadLine(), out answer)))
+        //    {
+        //        Console.WriteLine("Please enter an integer.");
+        //    }
+        //    else if (answer <= 1)
+        //    {
+        //        Console.WriteLine("Please enter a number above 1.");
+        //    }
+        //}
+        //Console.WriteLine("You have " + answer + " players in the game.");
+        //return answer;
     }
 
     private static Player[] DeterminePlayers()
