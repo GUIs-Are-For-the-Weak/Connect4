@@ -11,5 +11,5 @@ abstract class Player
         Name = name;
     }
 
-    public abstract int TakeTurn();    
+    public abstract int TakeTurn(Player[,] board);
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Connect4
 {
@@ -25,7 +26,7 @@ namespace Connect4
                     } else if (answer == "y")
                     {
                         Console.WriteLine("Starting a new game...");
-                        System.Threading.Thread.Sleep(2000); //2 second wait time
+                        Thread.Sleep(2000); //2 second wait time
                         //Console.Clear();
                         check = false;
                     }

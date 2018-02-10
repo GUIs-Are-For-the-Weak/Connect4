@@ -6,21 +6,21 @@ class Human : Player
     {
     }
 
-    public override int TakeTurn()
+    public override int TakeTurn(Player[,] board)
     {
         int columnChoice = 0;
         do
         {
-            if (Int32.TryParse(Console.ReadLine(), out columnChoice))
+            if (int.TryParse(Console.ReadLine(), out columnChoice))
             {
                 if(columnChoice >=1 && columnChoice <= 7)
                     return columnChoice;
                 columnChoice = 0;
-                System.Console.WriteLine("Columns only number between 1 and 7");
+                Console.WriteLine("Columns only number between 1 and 7");
             }
             else
             {
-                System.Console.WriteLine("Please enter an integer");
+                Console.WriteLine("Please enter an integer");
             }
         } while (columnChoice == 0);
         return 0;

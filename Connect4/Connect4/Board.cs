@@ -33,6 +33,10 @@ class Board
             Console.WriteLine();
         }
     }
+
+    public Player[,] ToArray() => (Player[,])_board.Clone();
+
+
     public event EndGame GameEnded;
 
 

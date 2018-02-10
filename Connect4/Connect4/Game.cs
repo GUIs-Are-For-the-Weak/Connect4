@@ -2,21 +2,22 @@ using System;
 
 class Game
 {
-    private ConsoleColor[] colours = {ConsoleColor.Red, ConsoleColor.Yellow};
-    private Player[] players; //Array of players
-    private Func<Board, int, bool> isGameWon; //The condition necassary to win
+    private static readonly ConsoleColor[] _colours = {ConsoleColor.Red, ConsoleColor.Yellow};
+    private Player[] _players; //Array of players
+    private Func<Board, int, bool> _isGameWon; //The condition necassary to win
+    private Board _gameBoard;
 
     //Constructor
     public Game(Func<Board, int, bool> winCondition)
     {
         //Determine player count, and types of players
-        players = DeterminePlayers();
+        _players = DeterminePlayers();
         
 
-        isGameWon = winCondition;
+        _isGameWon = winCondition;
 
         //Create the game board
-        gameBoard = new Board(6, 7, winCondition);
+        _gameBoard = new Board(6, 7, winCondition);
     }
 
 
@@ -29,7 +30,7 @@ class Game
         while (answer <= 1)
         {
             //Determine if the input is an integer, and store it in answer if it is.
-            if (!(Int32.TryParse(Console.ReadLine(), out answer)))
+            if (!(int.TryParse(Console.ReadLine(), out answer)))
             {
                 Console.WriteLine("Please enter an integer.");
             }
@@ -47,45 +48,61 @@ class Game
         Player[] players = new Player[DeterminePlayerNumber()];
 
         //Determine the main players name, and add them to the array.
-        players[0] = new Human(colours[0], getPlayerName());
+        players[0] = new Human(_colours[0], GetPlayerName());
 
         //Determine the type of each other player.
         for (int i = 1; i < players.Length; i++)
         {
-            Console.WriteLine("What should player" + (i + 1) + " be?");
+            Console.WriteLine($"What should player {i+1} be?");
             Console.WriteLine("1. A human player.");
-            Console.WriteLine("2. An AI player.");
-            int typeChoice = 0;
-            do
-            {
-                if (Int32.TryParse(Console.ReadLine(), out typeChoice))
-                {
-                    if (typeChoice == 1)
-                    {
+            Console.WriteLine("2. An AI player.\n");
+            Console.Write("Choice: ");
 
-                        players[i] = new Human(colours[i], getPlayerName());
-                    }
-                    else if (typeChoice == 2)
-                    {
-                        players[i] = new AI(colours[i], gameBoard);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please enter 1 or 2.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Please enter an integer");
-                }
-            } while (typeChoice == 0);
+
+            //int typeChoice = 0;
+            //do
+            //{
+            //    if (int.TryParse(Console.ReadLine(), out typeChoice))
+            //    {
+            //        if (typeChoice == 1)
+            //        {
+
+            //            players[i] = new Human(_colours[i], GetPlayerName());
+            //        }
+            //        else if (typeChoice == 2)
+            //        {
+            //            players[i] = new AI(_colours[i]);
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine("Please enter 1 or 2.");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Please enter an integer");
+            //    }
+            //} while (typeChoice == 0);
+
+            int choice;
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
+                Console.Write("Please enter either 1 or 2.\nChoice:  ");
+
+            switch(choice)
+            {
+                case 1: players[i] = new Human(_colours[i], GetPlayerName());
+                    break;
+                case 2: players[i] = new AI(_colours[i]);
+                    break;
+            }
+
         }
         return players;
     }
 
-    private static String getPlayerName()
+    private static string GetPlayerName()
     {
-        Console.WriteLine("Enter a name:");
+        Console.Write("Enter player name: ");
         return Console.ReadLine();
     }
 
