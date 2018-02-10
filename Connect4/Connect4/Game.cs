@@ -27,14 +27,7 @@ class Game
     {
         Console.Write("Enter the number of players: ");
 
-        int answer;
-        while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2)
-            Console.Write("Please enter an integer of at least 2.\nEnter the number of players: ");
-
-        return answer;
-
-        //int answer
-
+        //int answer = 0
         //while (answer <= 1)
         //{
         //    //Determine if the input is an integer, and store it in answer if it is.
@@ -48,7 +41,13 @@ class Game
         //    }
         //}
         //Console.WriteLine("You have " + answer + " players in the game.");
-        //return answer;
+
+
+        int answer;
+        while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2)
+            Console.Write("Please enter an integer of at least 2.\nEnter the number of players: ");
+
+        return answer;
     }
 
     private static Player[] DeterminePlayers()
