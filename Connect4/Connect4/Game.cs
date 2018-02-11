@@ -9,9 +9,13 @@ class Game
     private Func<Board, int, bool> _isGameWon; //The condition necassary to win
     private Board _gameBoard;
 
+
     //Constructor
-    public Game(Func<Board, int, bool> winCondition)
+    public Game(Func<Board, int, bool> winCondition, EndGame gameEndHandler = null)
     {
+        if (gameEndHandler != null)
+            GameEnded += gameEndHandler;
+
         //Determine player count, and types of players
         _players = DeterminePlayers();
 
@@ -24,6 +28,16 @@ class Game
         bool gameState = false;
         while(!gameState)
         {
+            bool emptyColumn = false;
+            for (int i = 0; i < _gameBoard.Width; i++)
+            {
+                if (_gameBoard[i, 0] == null)
+                {
+                    emptyColumn = true;
+                    break;
+                }
+            }
+
             //Take the turn
             _gameBoard.PlacePiece(_players[currentPlayer], _players[currentPlayer].TakeTurn(_gameBoard.ToArray()));
             //Check if the game is won
@@ -31,7 +45,7 @@ class Game
         }
 
         //TODO: Account for a win where the gameboard is full
-        GameEnded.Invoke(_players[currentPlayer]);
+        GameEnded(_players[currentPlayer]);
     }
 
 
@@ -63,6 +77,7 @@ class Game
 
         return answer;
     }
+
 
     private static Player[] DeterminePlayers()
     {
