@@ -40,6 +40,8 @@ namespace Connect4
             Console.ReadLine(); //Needed to stop the console window from closing
         }
 
+        //The normal Connect4 win condition.
+        //TODO: Finish writing this method!
         private static bool StandardWinCondition(Board board, int column)
         {
             int row = 0;

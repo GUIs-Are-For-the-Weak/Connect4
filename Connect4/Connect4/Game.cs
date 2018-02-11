@@ -2,6 +2,8 @@ using System;
 
 class Game
 {
+    //Player piece colours.
+    //TODO: Add more player colours.
     private static readonly ConsoleColor[] _colours = {ConsoleColor.Red, ConsoleColor.Yellow};
     private Player[] _players; //Array of players
     private Func<Board, int, bool> _isGameWon; //The condition necassary to win
@@ -17,7 +19,7 @@ class Game
         _isGameWon = winCondition;
 
         //Create the game board
-        _gameBoard = new Board(6, 7, winCondition);
+        _gameBoard = new Board(6, 7);
     }
 
 
@@ -107,10 +109,22 @@ class Game
         return players;
     }
 
+    //Gets the name of a player from the user.
     private static string GetPlayerName()
     {
         Console.Write("Enter player name: ");
         return Console.ReadLine();
     }
 
+    /// <summary>
+    /// Invoked when the game has ended (either a player has won, or the board is full)
+    /// </summary>
+    public event EndGame GameEnded;
+
 }
+
+/// <summary>
+/// Type of event handler to call when the game ends.
+/// </summary>
+/// <param name="winner">The winner of the game. Null if there was a draw.</param>
+delegate void EndGame(/*null if draw*/Player winner);
