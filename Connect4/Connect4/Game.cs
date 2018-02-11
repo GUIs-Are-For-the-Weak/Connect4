@@ -14,12 +14,24 @@ class Game
     {
         //Determine player count, and types of players
         _players = DeterminePlayers();
-        
-
-        _isGameWon = winCondition;
 
         //Create the game board
         _gameBoard = new Board(6, 7);
+
+        //Loop until the game is won
+        int currentPlayer = 0;
+        int column = 0;
+        bool gameState = false;
+        while(!gameState)
+        {
+            //Take the turn
+            _gameBoard.PlacePiece(_players[currentPlayer], _players[currentPlayer].TakeTurn(_gameBoard.ToArray()));
+            //Check if the game is won
+            gameState = winCondition(_gameBoard, column);
+        }
+
+        //TODO: Account for a win where the gameboard is full
+        GameEnded.Invoke(_players[currentPlayer]);
     }
 
 
