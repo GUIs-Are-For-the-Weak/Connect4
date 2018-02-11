@@ -11,10 +11,11 @@ class Human : Player
         int columnChoice = 0;
         do
         {
+            Console.Write("Column choice: ");
             if (int.TryParse(Console.ReadLine(), out columnChoice))
             {
                 if(columnChoice >=1 && columnChoice <= 7)
-                    return columnChoice;
+                    return columnChoice - 1; //Zero index!
                 columnChoice = 0;
                 Console.WriteLine("Columns only number between 1 and 7");
             }

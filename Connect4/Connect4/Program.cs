@@ -42,7 +42,7 @@ namespace Connect4
 
         //The normal Connect4 win condition.
         //TODO: Finish writing this method!
-        private static bool StandardWinCondition(Board board, int column)
+        public static bool StandardWinCondition(Board board, int column)
         {
             int row = 0;
             int inlineCount = 0;
