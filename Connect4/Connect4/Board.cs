@@ -24,11 +24,20 @@ class Board
     /// </summary>
     /// <param name="column">The zero-based column on the board in which to place the piece</param>
     /// <returns>true if the piece was placed, false if the column was full</returns>
-    public bool PlacePiece(int column)
+    public bool PlacePiece(Player player, int column)
     {
         if (IsColumnFull(column))
             return false;
-        //TODO: Place a piece on the board.
+
+        //Place a piece on the board - lowest possible location in the column
+        for(int i = _board.GetLength(0)-1; i > 0; i--)
+        {
+            if(_board[i, column] == null)
+            {
+                _board[i, column] = player;
+                return true;
+            }
+        }
         return true;
     }
 
