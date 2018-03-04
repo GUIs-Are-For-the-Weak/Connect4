@@ -2,23 +2,14 @@ using System;
 
 abstract class Player
 {
-    private String _name;
-    private ConsoleColor _colour;
-    public Player(ConsoleColor colour)
+    public string Name { get; }
+    public ConsoleColor Colour { get; }
+
+    public Player(ConsoleColor colour, string name)
     {
-        _colour = colour;
-       
+        Colour = colour;
+        Name = name;
     }
 
-    public void SetName(String name)
-    {
-        _name = name;
-    }
-
-    public String GetName()
-    {
-        return _name;
-    }
-
-    abstract public int TakeTurn();    
+    public abstract int TakeTurn(Player[,] board);
 }

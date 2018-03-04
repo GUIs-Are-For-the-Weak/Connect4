@@ -2,66 +2,141 @@ using System;
 
 class Game
 {
-
-    private int _numberOfPlayers; //Number of players in the game TODO: Determine if AI or Human
-    private int _gameType; //Number in a row needed for a win
-    private Func<Board, int, bool> winCondition; //The condition necassary to win
+    //Player piece colours.
+    //TODO: Add more player colours.
+    private static readonly ConsoleColor[] _colours = {ConsoleColor.Red, ConsoleColor.Yellow};
+    private Player[] _players; //Array of players
+    private Func<Board, int, bool> _isGameWon; //The condition necassary to win
+    private Board _gameBoard;
 
     //Constructor
-    public Game(int numberOfPlayers, int rowsToWin)
+    public Game(Func<Board, int, bool> winCondition)
     {
-        _numberOfPlayers = numberOfPlayers;
-        _gameType = rowsToWin;
-        winCondition = delegate(Board board, int column) 
+        //Determine player count, and types of players
+        _players = DeterminePlayers();
+
+        //Create the game board
+        _gameBoard = new Board(6, 7);
+
+        //Loop until the game is won
+        int currentPlayer = 0;
+        int column = 0;
+        bool gameState = false;
+        while(!gameState)
         {
-            int row = 0;
-            int inlineCount = 0;
-            Player currentToken, nextToken;
-            bool changeDirection = false;
-            //Get the position of the token that was just placed
-            for (int i = 6; i >= 0; i--)
-            {
-                if(board[i, column] != '-')
-                {
-                    row = i;
-                    break;
-                }
-            }
-            currentToken = board[row,column];
-            for (int i = 0; i < _gameType; i++)
-            {
-                if(row-i > 0)
-                {
-                    nextToken = board[row-(i+1),column];
-                    if(currentToken == nextToken)
-                    {
-                        inlineCount++;
-                        currentToken = nextToken;
-                    } 
-                    else
-                    {
-                        break;    
-                    }
-                } 
-                else
-                {
-                    break;
-                }
-            }
-            do
-            {
-                
-            } while (true);
-            return true;
-        };
-        SetupBoard();
+            //Take the turn
+            _gameBoard.PlacePiece(_players[currentPlayer], _players[currentPlayer].TakeTurn(_gameBoard.ToArray()));
+            //Check if the game is won
+            gameState = winCondition(_gameBoard, column);
+        }
+
+        //TODO: Account for a win where the gameboard is full
+        GameEnded.Invoke(_players[currentPlayer]);
     }
 
-    //Start the game
-    public void SetupBoard()
+
+    //Determine the number of players that are in the game
+    //TODO: Determine which players are AI and human.
+    private static int DeterminePlayerNumber()
     {
-        //Create the board
-        Board board = new Board(6, 7, (Board, column) => throw new NotImplementedException());
+        Console.Write("Enter the number of players: ");
+
+        //int answer = 0
+        //while (answer <= 1)
+        //{
+        //    //Determine if the input is an integer, and store it in answer if it is.
+        //    if (!(int.TryParse(Console.ReadLine(), out answer)))
+        //    {
+        //        Console.WriteLine("Please enter an integer.");
+        //    }
+        //    else if (answer <= 1)
+        //    {
+        //        Console.WriteLine("Please enter a number above 1.");
+        //    }
+        //}
+        //Console.WriteLine("You have " + answer + " players in the game.");
+
+
+        int answer;
+        while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2)
+            Console.Write("Please enter an integer of at least 2.\nEnter the number of players: ");
+
+        return answer;
     }
+
+    private static Player[] DeterminePlayers()
+    {
+        Player[] players = new Player[DeterminePlayerNumber()];
+
+        //Determine the main players name, and add them to the array.
+        players[0] = new Human(_colours[0], GetPlayerName());
+
+        //Determine the type of each other player.
+        for (int i = 1; i < players.Length; i++)
+        {
+            Console.WriteLine($"What should player {i+1} be?");
+            Console.WriteLine("1. A human player.");
+            Console.WriteLine("2. An AI player.\n");
+            Console.Write("Choice: ");
+
+
+            //int typeChoice = 0;
+            //do
+            //{
+            //    if (int.TryParse(Console.ReadLine(), out typeChoice))
+            //    {
+            //        if (typeChoice == 1)
+            //        {
+
+            //            players[i] = new Human(_colours[i], GetPlayerName());
+            //        }
+            //        else if (typeChoice == 2)
+            //        {
+            //            players[i] = new AI(_colours[i]);
+            //        }
+            //        else
+            //        {
+            //            Console.WriteLine("Please enter 1 or 2.");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Please enter an integer");
+            //    }
+            //} while (typeChoice == 0);
+
+            int choice;
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
+                Console.Write("Please enter either 1 or 2.\nChoice:  ");
+
+            switch(choice)
+            {
+                case 1: players[i] = new Human(_colours[i], GetPlayerName());
+                    break;
+                case 2: players[i] = new AI(_colours[i]);
+                    break;
+            }
+
+        }
+        return players;
+    }
+
+    //Gets the name of a player from the user.
+    private static string GetPlayerName()
+    {
+        Console.Write("Enter player name: ");
+        return Console.ReadLine();
+    }
+
+    /// <summary>
+    /// Invoked when the game has ended (either a player has won, or the board is full)
+    /// </summary>
+    public event EndGame GameEnded;
 
 }
+
+/// <summary>
+/// Type of event handler to call when the game ends.
+/// </summary>
+/// <param name="winner">The winner of the game. Null if there was a draw.</param>
+delegate void EndGame(/*null if draw*/Player winner);

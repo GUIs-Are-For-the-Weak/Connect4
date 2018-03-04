@@ -2,26 +2,26 @@ using System;
 
 class Human : Player
 {
-    public Human(ConsoleColor colour, String name) : base(colour)
+    public Human(ConsoleColor colour, string name) : base(colour, name)
     {
-        SetName(name);
     }
 
-    public override int TakeTurn()
+    public override int TakeTurn(Player[,] board)
     {
         int columnChoice = 0;
         do
         {
-            if (Int32.TryParse(Console.ReadLine(), out columnChoice))
+            Console.Write("Column choice: ");
+            if (int.TryParse(Console.ReadLine(), out columnChoice))
             {
                 if(columnChoice >=1 && columnChoice <= 7)
-                    return columnChoice;
+                    return columnChoice - 1; //Zero index!
                 columnChoice = 0;
-                System.Console.WriteLine("Columns only number between 1 and 7");
+                Console.WriteLine("Columns only number between 1 and 7");
             }
             else
             {
-                System.Console.WriteLine("Please enter an integer");
+                Console.WriteLine("Please enter an integer");
             }
         } while (columnChoice == 0);
         return 0;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Connect4
 {
@@ -6,78 +7,83 @@ namespace Connect4
     {
         static void Main(string[] args)
         {
-            DeterminePlayers(DeterminePlayerNumber());
-            Game game = new Game(DeterminePlayerNumber(), 4); //2 players, 4 in a row to win
-            Console.ReadLine(); //Needed to stop the console window from closing
-        }
-
-        //Determine the number of players that are in the game
-        //TODO: Determine which players are AI and human.
-        private static int DeterminePlayerNumber()
-        {
-            Console.WriteLine("How many players do you want?");
-            int answer = 0;
-            while (answer <= 1)
+            //Game repeat loop
+            bool loop = true;
+            do
             {
-                //Determine if the input is an integer, and store it in answer if it is.
-                if (!(Int32.TryParse(Console.ReadLine(), out answer)))
-                {
-                    Console.WriteLine("Please enter an integer.");
-                }
-                else if(answer <= 1)
-                {
-                    Console.WriteLine("Please enter a number above 1.");
-                }
-            }
-            Console.WriteLine("You have " + answer + " players in the game.");
-            return answer;
-        }
-
-        private static Player[] DeterminePlayers(int numberOfPlayers)
-        {
-            Player[] players = new Player[numberOfPlayers];
-            
-            //Determine the main players name, and add them to the array.
-            players[0] = new Human(ConsoleColor.Yellow, getName());
-
-            //Determine the type of each other player.
-            for(int i = 1; i < numberOfPlayers; i++)
-            {
-                Console.WriteLine("What should player" + (i + 1) + " be?");
-                Console.WriteLine("1. A human player.");
-                Console.WriteLine("2. An AI player.");
-                int typeChoice = 0;
+                Console.Clear();
+                Game game = new Game(StandardWinCondition);
+                Console.WriteLine("Do you want to play another game? Y/N");
+                bool check = true;
                 do
                 {
-                    if (Int32.TryParse(Console.ReadLine(), out typeChoice))
+                    string answer = Console.ReadLine();
+                    if (answer == "n")
                     {
-                        if (typeChoice == 1)
-                        {
-
-                            players[i] = new Human(ConsoleColor.Red, getName());
-                        }
-                        else if (typeChoice == 2)
-                        {
-                            players[i] = new AI(ConsoleColor.Red, new Board(6, 7, (Board, column) => throw new NotImplementedException()));
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter 1 or 2.");
-                        }
+                        Console.WriteLine("Press enter to close this window...");
+                        loop = false;
+                        check = false;
+                    } else if (answer == "y")
+                    {
+                        Console.WriteLine("Starting a new game...");
+                        Thread.Sleep(2000); //2 second wait time
+                        //Console.Clear();
+                        check = false;
                     }
                     else
                     {
-                        Console.WriteLine("Please enter an integer");
+                        Console.WriteLine("Please enter Y or N.");
                     }
-                } while (typeChoice == 0);
-            }
-            return players;
+                } while (check);
+            } while (loop);
+
+            Console.ReadLine(); //Needed to stop the console window from closing
         }
 
-        private static String getName()
+        //The normal Connect4 win condition.
+        //TODO: Finish writing this method!
+        public static bool StandardWinCondition(Board board, int column)
         {
-            Console.WriteLine("Enter a name:");
-            return Console.ReadLine();
+            int row = 0;
+            int inlineCount = 0;
+            Player currentToken, nextToken;
+            bool changeDirection = false;
+            //Get the position of the token that was just placed
+            for (int i = 6; i >= 0; i--)
+            {
+                if(board[i, column] != null)
+                {
+                    row = i;
+                    break;
+                }
+            }
+            currentToken = board[row,column];
+            for (int i = 0; i < 4; i++)
+            {
+                if(row-i > 0)
+                {
+                    nextToken = board[row-(i+1),column];
+                    if(currentToken == nextToken)
+                    {
+                        inlineCount++;
+                        currentToken = nextToken;
+                    } 
+                    else
+                    {
+                        break;    
+                    }
+                } 
+                else
+                {
+                    break;
+                }
+            }
+            do
+            {
+                
+            } while (true);
+            return true;
         }
+       
     }
 }
