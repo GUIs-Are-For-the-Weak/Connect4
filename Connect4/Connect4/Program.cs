@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Connect4
 {
-    class Program
+    static class Program
     {
+        static List<Player> _winners = new List<Player>();
+
         static void Main(string[] args)
         {
             //Game repeat loop
@@ -40,6 +43,11 @@ namespace Connect4
             Console.ReadLine(); //Needed to stop the console window from closing
         }
 
+        public static void winHandler(Player winner)
+        {
+            _winners.Add(winner);
+        }
+
         //The normal Connect4 win condition.
         //TODO: Finish writing this method!
         public static bool StandardWinCondition(Board board, int column)
@@ -49,7 +57,7 @@ namespace Connect4
             Player currentToken, nextToken;
             bool changeDirection = false;
             //Get the position of the token that was just placed
-            for (int i = 6; i >= 0; i--)
+            for (int i = board.Height - 1; i >= 0; i--)
             {
                 if(board[i, column] != null)
                 {

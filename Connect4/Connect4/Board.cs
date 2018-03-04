@@ -4,6 +4,9 @@ class Board
 {
     private Player[,] _board;
 
+    public int Height => _board.GetLength(0);
+    public int Width => _board.GetLength(1);
+
     /// <summary>
     /// Initialises a Connect4 game Board with the specified height, width and winning condition.
     /// </summary>
@@ -38,7 +41,7 @@ class Board
                 return true;
             }
         }
-        return true;
+        throw new Exception("Piece couldn't be placed...?");
     }
 
 
