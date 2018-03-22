@@ -6,7 +6,6 @@ namespace Connect4
 {
     static class Program
     {
-        static List<Player> _winners = new List<Player>();
 
         static void Main(string[] args)
         {
@@ -15,7 +14,7 @@ namespace Connect4
             do
             {
                 Console.Clear();
-                Game game = new Game(StandardWinCondition);
+                Game game = new Game(StandardWinCondition, winHandler);
                 Console.WriteLine("Do you want to play another game? Y/N");
                 bool check = true;
                 do
@@ -26,7 +25,8 @@ namespace Connect4
                         Console.WriteLine("Press enter to close this window...");
                         loop = false;
                         check = false;
-                    } else if (answer == "y")
+                    }
+                    else if (answer == "y")
                     {
                         Console.WriteLine("Starting a new game...");
                         Thread.Sleep(2000); //2 second wait time
@@ -43,55 +43,81 @@ namespace Connect4
             Console.ReadLine(); //Needed to stop the console window from closing
         }
 
+        //What is this for?
         public static void winHandler(Player winner)
         {
-            _winners.Add(winner);
+            Console.WriteLine($"{winner?.ToString() ?? "No one"} won the game!");
         }
 
         //The normal Connect4 win condition.
         //TODO: Finish writing this method!
-        public static bool StandardWinCondition(Board board, int column)
+        public static bool StandardWinCondition(Board board)
         {
-            int row = 0;
-            int inlineCount = 0;
-            Player currentToken, nextToken;
-            bool changeDirection = false;
-            //Get the position of the token that was just placed
-            for (int i = board.Height - 1; i >= 0; i--)
+            bool checkHorizontal()
             {
-                if(board[i, column] != null)
+                for (int i = 0; i < board.Height; i++)
                 {
-                    row = i;
-                    break;
-                }
-            }
-            currentToken = board[row,column];
-            for (int i = 0; i < 4; i++)
-            {
-                if(row-i > 0)
-                {
-                    nextToken = board[row-(i+1),column];
-                    if(currentToken == nextToken)
+                    for (int j = 0; j < board.Width - 3; j++)
                     {
-                        inlineCount++;
-                        currentToken = nextToken;
-                    } 
-                    else
-                    {
-                        break;    
+                        if (board[i, j] == null)
+                            continue;
+
+                        if (board[i, j] == board[i, j + 1] && board[i, j] == board[i, j + 2] && board[i, j] == board[i, j + 3])
+                            return true;
                     }
-                } 
-                else
-                {
-                    break;
                 }
+                return false;
             }
-            do
+
+            bool checkVertical()
             {
-                
-            } while (true);
-            return true;
+                for (int i = 0; i < board.Height - 3; i++)
+                {
+                    for (int j = 0; j < board.Width; j++)
+                    {
+                        if (board[i, j] == null)
+                            continue;
+
+                        if (board[i, j] == board[i + 1, j] && board[i, j] == board[i + 2, j] && board[i, j] == board[i + 3, j])
+                            return true;
+                    }
+                }
+                return false;
+            }
+
+            bool checkMainDiagonal()
+            {
+                for (int i = 0; i < board.Height - 3; i++)
+                {
+                    for (int j = 0; j < board.Width - 3; j++)
+                    {
+                        if (board[i, j] == null)
+                            continue;
+
+                        if (board[i, j] == board[i + 1, j + 1] && board[i, j] == board[i + 2, j + 2] && board[i, j] == board[i + 3, j + 3])
+                            return true;
+                    }
+                }
+                return false;
+            }
+
+            bool checkMinorDiagonal()
+            {
+                for (int i = 3; i < board.Height; i++)
+                {
+                    for (int j = 0; j < board.Width - 3; j++)
+                    {
+                        if (board[i, j] == null)
+                            continue;
+
+                        if (board[i, j] == board[i - 1, j + 1] && board[i, j] == board[i - 2, j + 2] && board[i, j] == board[i - 3, j + 3])
+                            return true;
+                    }
+                }
+                return false;
+            }
+            return checkMainDiagonal() || checkMinorDiagonal() || checkHorizontal() || checkVertical();
         }
-       
+
     }
 }

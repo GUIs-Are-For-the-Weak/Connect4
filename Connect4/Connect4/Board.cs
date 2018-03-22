@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 class Board
 {
@@ -15,12 +16,8 @@ class Board
     /// <param name="winCheck">A function to run to check if the game has been won. 
     /// Takes the game Board and a zero-based column in which the last piece was placed. 
     /// Should return true if the game has been won, false otherwise.</param>
-    public Board(int height, int width)
-    {
-        _board = new Player[height, width];
-        Draw();
-
-    }
+    public  Board(int height, int width)
+        => _board = new Player[height, width];
 
     /// <summary>
     /// Places a piece in a column on the board, if there is space.
@@ -33,9 +30,9 @@ class Board
             return false;
 
         //Place a piece on the board - lowest possible location in the column
-        for(int i = _board.GetLength(0)-1; i > 0; i--)
+        for (int i = _board.GetLength(0) - 1; i >= 0; i--)
         {
-            if(_board[i, column] == null)
+            if (_board[i, column] == null)
             {
                 _board[i, column] = player;
                 return true;
@@ -50,17 +47,40 @@ class Board
 
     public void Draw()
     {
-        Console.WriteLine(" 1 2 3 4 5 6");
+        string TopRow()
+        {
+            var builder = new StringBuilder("  ");
+            for (int i = 0; i < _board.GetLength(1); i++)
+            {
+                builder.Append($"{i+1,2}");
+            }
+            return builder.ToString();
+        }
+
+        Console.WriteLine(TopRow());
+        //Console.WriteLine("   1 2 3 4 5 6");
         for (int i = 0; i < _board.GetLength(0); i++)
         {
+            Console.Write($"{i+1,2}");
             for (int j = 0; j < _board.GetLength(1); j++)
             {
                 Console.Write('|');
-                Console.Write(_board[i,j]);
+                ConsoleColor defaultColour = Console.ForegroundColor;
+                Console.ForegroundColor = _board[i, j]?.Colour ?? defaultColour;
+                Console.Write(_board[i, j] == null ? " " : "O");
+                Console.ForegroundColor = defaultColour;
             }
             Console.Write('|');
             Console.WriteLine();
         }
+
+        //Print bottom border of the game board
+        Console.Write("  ");
+        for (int i = 0; i < _board.GetLength(1); i++)
+        {
+            Console.Write("\u0305\u0305");
+        }
+        Console.WriteLine("\u0305");
     }
 
     /// <summary>
@@ -72,5 +92,5 @@ class Board
 
 
 
-    public Player this[int row, int column] => _board[row,column];
+    public Player this[int row, int column] => _board[row, column];
 }

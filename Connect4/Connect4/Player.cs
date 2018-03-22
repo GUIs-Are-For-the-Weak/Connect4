@@ -12,4 +12,6 @@ abstract class Player
     }
 
     public abstract int TakeTurn(Player[,] board);
+
+    public override string ToString() => Name;
 }

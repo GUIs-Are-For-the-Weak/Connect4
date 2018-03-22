@@ -6,24 +6,24 @@ class Human : Player
     {
     }
 
+    /// <summary>
+    /// Gets the player to select a column to place their token into.
+    /// </summary>
+    /// <param name="board">The game board</param>
+    /// <returns>The column number (zero-indexed) the player chose to place their piece</returns>
     public override int TakeTurn(Player[,] board)
     {
-        int columnChoice = 0;
+        int column;
         do
         {
-            Console.Write("Column choice: ");
-            if (int.TryParse(Console.ReadLine(), out columnChoice))
-            {
-                if(columnChoice >=1 && columnChoice <= 7)
-                    return columnChoice - 1; //Zero index!
-                columnChoice = 0;
-                Console.WriteLine("Columns only number between 1 and 7");
-            }
-            else
-            {
-                Console.WriteLine("Please enter an integer");
-            }
-        } while (columnChoice == 0);
-        return 0;
+            Console.Write("Enter column: ");
+            while (!int.TryParse(Console.ReadLine(), out column) || column < 1 || column > board.GetLength(1))
+                Console.Write($"Please enter an integer between 1 and {board.GetLength(1)}\nEnter column: ");
+
+            if (board[0, column - 1] != null)
+                Console.WriteLine("This column is full! Try again...");
+
+        } while (board[0, column - 1] != null);
+        return column - 1;
     }
 }

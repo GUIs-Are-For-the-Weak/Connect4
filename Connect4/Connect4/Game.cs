@@ -4,14 +4,14 @@ class Game
 {
     //Player piece colours.
     //TODO: Add more player colours.
-    private static readonly ConsoleColor[] _colours = {ConsoleColor.Red, ConsoleColor.Yellow};
+    private static readonly ConsoleColor[] _colours = { ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green, ConsoleColor.Blue };
     private Player[] _players; //Array of players
     private Func<Board, int, bool> _isGameWon; //The condition necassary to win
     private Board _gameBoard;
 
 
     //Constructor
-    public Game(Func<Board, int, bool> winCondition, EndGame gameEndHandler = null)
+    public Game(Func<Board, bool> winCondition, EndGame gameEndHandler = null)
     {
         if (gameEndHandler != null)
             GameEnded += gameEndHandler;
@@ -23,13 +23,15 @@ class Game
         _gameBoard = new Board(6, 7);
 
         //Loop until the game is won
-        int currentPlayer = 0;
+        int playerIndex = -1;
         int column = 0;
         bool gameState = false;
-        while(!gameState)
+        while (!gameState)
         {
+            playerIndex = ++playerIndex % _players.Length;
+            //TODO: What is this?
             bool emptyColumn = false;
-            for (int i = 0; i < _gameBoard.Width; i++)
+            for (int i = 0; i < _gameBoard.Height; i++)
             {
                 if (_gameBoard[i, 0] == null)
                 {
@@ -38,14 +40,35 @@ class Game
                 }
             }
 
-            //Take the turn
-            _gameBoard.PlacePiece(_players[currentPlayer], _players[currentPlayer].TakeTurn(_gameBoard.ToArray()));
-            //Check if the game is won
-            gameState = winCondition(_gameBoard, column);
-        }
 
+            _gameBoard.Draw();
+
+            //Take the turn
+            if (!_gameBoard.PlacePiece(_players[playerIndex], _players[playerIndex].TakeTurn(_gameBoard.ToArray())))
+                throw new Exception("Column index out of bounds or column is full.");
+
+            //Check if the game is won
+            gameState = winCondition(_gameBoard);
+
+            if (!gameState)
+            {
+                gameState = true;
+                for (int i = 0; i < _gameBoard.Width; i++)
+                {
+                    if (_gameBoard[0, i] == null)
+                    {
+                        gameState = false;
+                        break;
+                    }
+                }
+                if (gameState)
+                    playerIndex = -1;
+
+            }
+        }
+        _gameBoard.Draw();
         //TODO: Account for a win where the gameboard is full
-        GameEnded(_players[currentPlayer]);
+        GameEnded(playerIndex == -1 ? null : _players[playerIndex]);
     }
 
 
@@ -54,22 +77,6 @@ class Game
     private static int DeterminePlayerNumber()
     {
         Console.Write("Enter the number of players: ");
-
-        //int answer = 0
-        //while (answer <= 1)
-        //{
-        //    //Determine if the input is an integer, and store it in answer if it is.
-        //    if (!(int.TryParse(Console.ReadLine(), out answer)))
-        //    {
-        //        Console.WriteLine("Please enter an integer.");
-        //    }
-        //    else if (answer <= 1)
-        //    {
-        //        Console.WriteLine("Please enter a number above 1.");
-        //    }
-        //}
-        //Console.WriteLine("You have " + answer + " players in the game.");
-
 
         int answer;
         while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2)
@@ -89,46 +96,22 @@ class Game
         //Determine the type of each other player.
         for (int i = 1; i < players.Length; i++)
         {
-            Console.WriteLine($"What should player {i+1} be?");
+            Console.WriteLine($"What should player {i + 1} be?");
             Console.WriteLine("1. A human player.");
             Console.WriteLine("2. An AI player.\n");
             Console.Write("Choice: ");
-
-
-            //int typeChoice = 0;
-            //do
-            //{
-            //    if (int.TryParse(Console.ReadLine(), out typeChoice))
-            //    {
-            //        if (typeChoice == 1)
-            //        {
-
-            //            players[i] = new Human(_colours[i], GetPlayerName());
-            //        }
-            //        else if (typeChoice == 2)
-            //        {
-            //            players[i] = new AI(_colours[i]);
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Please enter 1 or 2.");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Please enter an integer");
-            //    }
-            //} while (typeChoice == 0);
 
             int choice;
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 2)
                 Console.Write("Please enter either 1 or 2.\nChoice:  ");
 
-            switch(choice)
+            switch (choice)
             {
-                case 1: players[i] = new Human(_colours[i], GetPlayerName());
+                case 1:
+                    players[i] = new Human(_colours[i], GetPlayerName());
                     break;
-                case 2: players[i] = new AI(_colours[i]);
+                case 2:
+                    players[i] = new AI(_colours[i]);
                     break;
             }
 
