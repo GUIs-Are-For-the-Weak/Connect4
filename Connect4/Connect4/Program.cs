@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 
+//Something
 namespace Connect4
 {
     static class Program
