@@ -43,14 +43,13 @@ namespace Connect4
             Console.ReadLine(); //Needed to stop the console window from closing
         }
 
-        //What is this for?
+        //Game win handler - print the winner to the console.
         public static void winHandler(Player winner)
         {
             Console.WriteLine($"{winner?.ToString() ?? "No one"} won the game!");
         }
 
-        //The normal Connect4 win condition.
-        //TODO: Finish writing this method!
+        //The normal Connect4 win condition - 4 in a row horizontally, vertically or diagonally.
         public static bool StandardWinCondition(Board board)
         {
             bool checkHorizontal()
@@ -116,6 +115,7 @@ namespace Connect4
                 }
                 return false;
             }
+
             return checkMainDiagonal() || checkMinorDiagonal() || checkHorizontal() || checkVertical();
         }
 

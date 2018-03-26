@@ -24,22 +24,10 @@ class Game
 
         //Loop until the game is won
         int playerIndex = -1;
-        int column = 0;
         bool gameState = false;
         while (!gameState)
         {
             playerIndex = ++playerIndex % _players.Length;
-            //TODO: What is this?
-            bool emptyColumn = false;
-            for (int i = 0; i < _gameBoard.Height; i++)
-            {
-                if (_gameBoard[i, 0] == null)
-                {
-                    emptyColumn = true;
-                    break;
-                }
-            }
-
 
             _gameBoard.Draw();
 
@@ -67,7 +55,7 @@ class Game
             }
         }
         _gameBoard.Draw();
-        //TODO: Account for a win where the gameboard is full
+
         GameEnded(playerIndex == -1 ? null : _players[playerIndex]);
     }
 
