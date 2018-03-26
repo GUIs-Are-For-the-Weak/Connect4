@@ -13,7 +13,7 @@ namespace Connect4
             do
             {
                 Console.Clear();
-                Game game = new Game(StandardWinCondition, winHandler);
+                Game game = new Game(StandardWinCondition, WinHandler);
                 Console.WriteLine("Do you want to play another game?");
                 bool check = true;
                 do
@@ -43,7 +43,7 @@ namespace Connect4
         }
 
         //Game win handler - print the winner to the console.
-        public static void winHandler(Player winner)
+        public static void WinHandler(Player winner)
         {
             Console.WriteLine($"{winner?.ToString() ?? "No one"} won the game!");
         }
