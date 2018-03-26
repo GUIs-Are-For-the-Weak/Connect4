@@ -5,7 +5,6 @@ class Game
     //Player piece colours.
     private static readonly ConsoleColor[] _colours = { ConsoleColor.Yellow, ConsoleColor.Red, ConsoleColor.Green, ConsoleColor.Blue };
     private Player[] _players; //Array of players
-    private Func<Board, int, bool> _isGameWon; //The condition necassary to win
     private Board _gameBoard;
 
 
@@ -19,7 +18,7 @@ class Game
         _players = DeterminePlayers();
 
         //Create the game board
-        _gameBoard = new Board(6, 7);
+        _gameBoard = CreateBoard();
 
         //Loop until the game is won
         int playerIndex = -1;
@@ -111,6 +110,48 @@ class Game
     {
         Console.Write("Enter player name: ");
         return Console.ReadLine();
+    }
+
+    private static Board CreateBoard()
+    {
+        int width, height;
+
+        //Check if they want the default size
+        Console.WriteLine("Would you like to use the default board size?");
+        Console.Write("Y/N: ");
+        string answer = Console.ReadLine();
+        while (!(answer.ToLower() == "y" || answer.ToLower() == "n"))
+        {
+            Console.WriteLine("Please enter Y or N.");
+            Console.Write("Y/N: ");
+            answer = Console.ReadLine();
+        }
+
+        //Set default size
+        if(answer.ToLower() == "y")
+        {
+            height = 6;
+            width = 7;
+        }
+        else
+        {
+            //Get height and width
+            Console.Write("Enter your height: ");
+            while (!int.TryParse(Console.ReadLine(), out height) || height < 4)
+            {
+                Console.WriteLine("Please enter a number larger than 4.");
+                Console.Write("Enter your height: ");
+            }
+
+            Console.Write("Enter your width: ");
+            while (!int.TryParse(Console.ReadLine(), out width) || width < 4)
+            {
+                Console.WriteLine("Please enter a number larger than 4.");
+                Console.Write("Enter your width: ");
+            }
+        }
+            
+        return new Board(height, width);
     }
 
     /// <summary>

@@ -14,22 +14,22 @@ namespace Connect4
             {
                 Console.Clear();
                 Game game = new Game(StandardWinCondition, winHandler);
-                Console.WriteLine("Do you want to play another game? Y/N");
+                Console.WriteLine("Do you want to play another game?");
                 bool check = true;
                 do
                 {
+                    Console.Write("Y/N: ");
                     string answer = Console.ReadLine();
-                    if (answer == "n")
+                    if (answer.ToLower() == "n")
                     {
                         Console.WriteLine("Press enter to close this window...");
                         loop = false;
                         check = false;
                     }
-                    else if (answer == "y")
+                    else if (answer.ToLower() == "y")
                     {
                         Console.WriteLine("Starting a new game...");
                         Thread.Sleep(2000); //2 second wait time
-                        //Console.Clear();
                         check = false;
                     }
                     else
