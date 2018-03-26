@@ -3,8 +3,7 @@ using System;
 class Game
 {
     //Player piece colours.
-    //TODO: Add more player colours.
-    private static readonly ConsoleColor[] _colours = { ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green, ConsoleColor.Blue };
+    private static readonly ConsoleColor[] _colours = { ConsoleColor.Yellow, ConsoleColor.Red, ConsoleColor.Green, ConsoleColor.Blue };
     private Player[] _players; //Array of players
     private Func<Board, int, bool> _isGameWon; //The condition necassary to win
     private Board _gameBoard;
@@ -67,8 +66,8 @@ class Game
         Console.Write("Enter the number of players: ");
 
         int answer;
-        while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2)
-            Console.Write("Please enter an integer of at least 2.\nEnter the number of players: ");
+        while (!int.TryParse(Console.ReadLine(), out answer) || answer < 2 || answer > 4)
+            Console.Write("Please enter an integer of at least 2, and no more than 4.\nEnter the number of players: ");
 
         return answer;
     }
