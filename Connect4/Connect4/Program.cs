@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 
+//Something
 namespace Connect4
 {
     static class Program
@@ -14,23 +14,23 @@ namespace Connect4
             do
             {
                 Console.Clear();
-                Game game = new Game(StandardWinCondition, winHandler);
-                Console.WriteLine("Do you want to play another game? Y/N");
+                Game game = new Game(StandardWinCondition, WinHandler);
+                Console.WriteLine("Do you want to play another game?");
                 bool check = true;
                 do
                 {
+                    Console.Write("Y/N: ");
                     string answer = Console.ReadLine();
-                    if (answer == "n")
+                    if (answer.ToLower() == "n")
                     {
                         Console.WriteLine("Press enter to close this window...");
                         loop = false;
                         check = false;
                     }
-                    else if (answer == "y")
+                    else if (answer.ToLower() == "y")
                     {
                         Console.WriteLine("Starting a new game...");
                         Thread.Sleep(2000); //2 second wait time
-                        //Console.Clear();
                         check = false;
                     }
                     else
@@ -43,14 +43,13 @@ namespace Connect4
             Console.ReadLine(); //Needed to stop the console window from closing
         }
 
-        //What is this for?
-        public static void winHandler(Player winner)
+        //Game win handler - print the winner to the console.
+        public static void WinHandler(Player winner)
         {
             Console.WriteLine($"{winner?.ToString() ?? "No one"} won the game!");
         }
 
-        //The normal Connect4 win condition.
-        //TODO: Finish writing this method!
+        //The normal Connect4 win condition - 4 in a row horizontally, vertically or diagonally.
         public static bool StandardWinCondition(Board board)
         {
             bool checkHorizontal()
@@ -116,6 +115,7 @@ namespace Connect4
                 }
                 return false;
             }
+
             return checkMainDiagonal() || checkMinorDiagonal() || checkHorizontal() || checkVertical();
         }
 
