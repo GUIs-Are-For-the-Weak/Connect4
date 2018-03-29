@@ -27,7 +27,7 @@ namespace Connect4GUI.Behaviours
 
         private static readonly Dictionary<TextBox, string> CurrentTextValues = new Dictionary<TextBox, string>();
 
-        public static void OnValidationTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnValidationTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             if (!(sender is TextBox b) || CurrentTextValues.ContainsKey(b))
                 return;
@@ -65,7 +65,7 @@ namespace Connect4GUI.Behaviours
                 }
             }
 
-            //TODO: Move this to LostFocus (or something...?)
+            //TODO: Move this to LostFocus (or something...?) Basically if the min is more than 9 it won't let you enter anything...
             if (GetValidationType(sender) == ValidationMethod.IntegerRange)
             {
                 if (!int.TryParse(sender.Text, out int result) || result < GetMinIntegerValue(sender) ||

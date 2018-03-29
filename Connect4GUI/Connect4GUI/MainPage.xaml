@@ -9,14 +9,24 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel>
-            <StackPanel>
-                <TextBlock Text="Number of Players (2-4)"/>
-                <TextBox behaviours:NumericValidation.ValidationType="IntegerRange" behaviours:NumericValidation.MinIntegerValue="2" behaviours:NumericValidation.MaxIntegerValue="4"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="Connect 4!" FontSize="100" TextAlignment="Center"/>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <TextBlock Text="Number of Players (2-4)" VerticalAlignment="Center" Margin="20,0"/>
+                <ComboBox HorizontalAlignment="Center">
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                </ComboBox>
+                <!--<TextBox behaviours:NumericValidation.ValidationType="IntegerRange" behaviours:NumericValidation.MinIntegerValue="2" behaviours:NumericValidation.MaxIntegerValue="4"/>-->
             </StackPanel>
-            <StackPanel>
-                <TextBlock Text=""></TextBlock>
-            </StackPanel>
+            
         </StackPanel>
     </Grid>
 </Page>
