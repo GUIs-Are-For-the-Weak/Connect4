@@ -3,6 +3,7 @@
     public enum ValidationMethod
     {
         None,
-        PositiveInteger
+        PositiveInteger,
+        IntegerRange
     };
 }

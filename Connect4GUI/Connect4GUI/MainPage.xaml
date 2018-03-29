@@ -11,8 +11,11 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel>
             <StackPanel>
-                <TextBlock Text="Number of Players"/>
-                <TextBox behaviours:NumericValidation.ValidationType="PositiveInteger"/>
+                <TextBlock Text="Number of Players (2-4)"/>
+                <TextBox behaviours:NumericValidation.ValidationType="IntegerRange" behaviours:NumericValidation.MinIntegerValue="2" behaviours:NumericValidation.MaxIntegerValue="4"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text=""></TextBlock>
             </StackPanel>
         </StackPanel>
     </Grid>
